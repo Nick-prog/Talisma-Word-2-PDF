@@ -21,7 +21,8 @@ def run(dir: str) -> None:
     docx_list = p.find_all_docx()
     pdf_list = p.find_all_pdf()
 
-    p.generate_pdfs(docx_list, pdf_list)
+    p.check_docx_files(docx_list)
+    # p.generate_pdfs(docx_list, pdf_list)
 
 if __name__ == '__main__':
     

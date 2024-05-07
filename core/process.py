@@ -1,6 +1,9 @@
 import os
 import sys
+import time
 import ctypes
+import pyautogui
+import subprocess
 from docx2pdf import convert
 
 class Process:
@@ -31,6 +34,51 @@ class Process:
         :rtype: list
         """
         return [os.path.join(self.output, file_name) for file_name in os.listdir(self.output) if file_name.endswith(".pdf")]
+    
+    def open_word_document(self, file_path: str) -> bool:
+        print(file_path)
+
+        try:
+            subprocess.Popen(["start", "winword", os.path.abspath(file_path)])
+            time.sleep(5)  # Wait for Word to open
+            return True
+        except Exception as e:
+            print("Error opening Word document:", e)
+            return False
+    
+    def detect_and_handle_popup(self) -> None:
+
+        # Load the document screenshot
+        screenshot = pyautogui.screenshot()
+
+        # Detect if there's a pop-up dialog box
+        popup = pyautogui.locateOnScreen('popup_dialog_box_1.png', image=screenshot)
+        print(popup)
+
+        if popup:
+            # Click 'Yes' button
+            pyautogui.click(popup.left + 50, popup.top + 50)
+            print("Clicked Ok on the pop-up dialog box.")
+            return True
+        
+        return False
+    
+    def check_docx_files(self, docx_list: list) -> None:
+
+        for file_path in docx_list:
+            if self.open_word_document(file_path):
+                # Give Word some time to load the document
+                time.sleep(10)
+
+                # Check for and handle any pop-up dialog boxes
+                self.detect_and_handle_popup()
+
+                # Close Word
+                os.system("taskkill /f /im winword.exe")
+        #     else:
+        #         print("Failed to open Word document.")
+        # else:
+        #     print("Word document not found.")
     
     def generate_pdfs(self, docx_files: list, pdf_files: list) -> None:
         """Generates PDFs based on the list of found docx files and the
