@@ -21,8 +21,8 @@ def run(dir: str) -> None:
     docx_list = p.find_all_docx()
     pdf_list = p.find_all_pdf()
 
-    p.check_docx_files(docx_list)
-    # p.generate_pdfs(docx_list, pdf_list)
+    # p.check_docx_files(docx_list)
+    p.generate_pdfs(docx_list, pdf_list)
 
 if __name__ == '__main__':
     
@@ -32,4 +32,4 @@ if __name__ == '__main__':
         run(dir)
 
     except BaseException as b:
-        ctypes.windll.user32.MessageBoxW(0, f"run() error encountered. {b}", (sys.exc_info()[1]), "Warning!", 16)
+        ctypes.windll.user32.MessageBoxW(0, "run() error encountered.", (sys.exc_info()[1]), "Warning!", 16)

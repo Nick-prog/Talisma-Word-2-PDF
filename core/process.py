@@ -105,7 +105,8 @@ class Process:
             else:
                 pass
 
-        # print(f"Total: {len(leftover)}")
+        print(f"Total: {len(leftover)}")
+        print(leftover)
 
         try:
             for x in range(len(leftover)):
@@ -113,7 +114,6 @@ class Process:
                 file = base + ".pdf"
                 output_file_path = os.path.join(self.output, file)
                 convert(leftover[x], output_file_path)
-                # print(f"{base} ...Converted.")
 
         except BaseException as b:
-            ctypes.windll.user32.MessageBoxW(0, f"Process() error encountered. {b}", (sys.exc_info()[1]), "Warning!", 16)
+            ctypes.windll.user32.MessageBoxW(0, "Process() error encountered.", (sys.exc_info()[1]), "Warning!", 16)
